@@ -1,7 +1,0 @@
-{
-    "cmake.configureSettings": {
-        "CMAKE_TOOLCHAIN_FILE": "/Users/daniu/workspace/vcpkg/scripts/buildsystems/vcpkg.cmake",
-        "VCPKG_BUILD": "ON"
-    },
-    "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools"
-}
