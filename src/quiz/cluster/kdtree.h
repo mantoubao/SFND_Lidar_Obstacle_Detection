@@ -2,6 +2,7 @@
 // Quiz on implementing kd tree
 
 #include "../../render/render.h"
+#include <limits>
 
 
 // Structure to represent node of kd tree
@@ -25,10 +26,56 @@ struct KdTree
 	: root(NULL)
 	{}
 
+	void inserthelper(Node** node, uint depth, std::vector<float> point, int id)
+	{
+		if (*node==NULL)
+			*node=new Node(point,id);
+		else{
+			uint branch=depth%2;
+			if(point[branch]<(*node)->point[branch])
+				inserthelper(&((*node)->left),depth+1,point,id);
+			else
+			{
+				inserthelper( &((*node)->right),depth+1,point,id );
+			}
+			
+
+		}
+
+
+	}
+
 	void insert(std::vector<float> point, int id)
 	{
 		// TODO: Fill in this function to insert a new point into the tree
 		// the function should create a new node and place correctly with in the root 
+		inserthelper(&root,0,point,id);
+
+
+
+	}
+
+	void searchhelper(Node* node, const std::vector<float>& target, float distanceTol, uint depth,std::vector<int>& ids){
+		if (node!=NULL)
+		{
+			int ptr_index=depth%2;
+			if( (node->point[0]>=target[0]-distanceTol) && (node->point[0]<=target[0]+distanceTol) && (node->point[1]>=target[1]-distanceTol) && (node->point[1]<=target[1]+distanceTol)){
+				//distance calculation
+				float delta_x= target[0]-node->point[0];;
+				float delta_y= target[1]-node->point[1];
+				float distance=sqrt(delta_x*delta_x+delta_y*delta_y);
+				if (distance <= distanceTol)
+					ids.push_back(node->id);
+			}
+			if(target[ptr_index]< node->point[ptr_index]+distanceTol)
+				searchhelper(node->left,target,distanceTol,depth+1,ids );
+			if(target[ptr_index] > node->point[ptr_index]-distanceTol)
+				searchhelper(node->right,target,distanceTol,depth+1,ids );
+
+
+		}
+
+		return;
 
 	}
 
@@ -36,6 +83,10 @@ struct KdTree
 	std::vector<int> search(std::vector<float> target, float distanceTol)
 	{
 		std::vector<int> ids;
+		int depth=0;
+		float dis_min= std::numeric_limits<float>::max();
+		searchhelper(root,target,distanceTol,depth,ids);
+
 		return ids;
 	}
 	
