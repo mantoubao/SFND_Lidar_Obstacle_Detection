@@ -52,9 +52,13 @@ public:
 
     std::pair<typename pcl::PointCloud<PointT>::Ptr, typename pcl::PointCloud<PointT>::Ptr>  RansacPlane(typename pcl::PointCloud<PointT>::Ptr cloud, int maxIterations, float distanceTol);
 
-    std::vector<std::vector<int>>  euclideanCluster(std::vector<std::vector<float>> points, KdTree* tree, float distanceTol,int minSize, int maxSize);
+    
+private:
     
     void proximity(KdTree* tree,std::vector<std::vector<float>> points, std::vector<int>& cluster, std::vector<bool>& processed, int index, float distanceTol);
+
+    std::vector<std::vector<int>>  euclideanCluster(std::vector<std::vector<float>> points, KdTree* tree, float distanceTol,int minSize, int maxSize);
+
 
   
 };
